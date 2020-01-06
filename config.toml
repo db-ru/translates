@@ -1,0 +1,7 @@
+baseURL = "https://db-ru.github.io"
+languageCode = "ru-ru"
+DefaultContentLanguage = "ru"
+title = "db-ru: о БД по-русски"
+theme = "ghostwriter"
+paginate = 5 
+pygmentsUseClasses = true
