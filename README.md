@@ -10,9 +10,13 @@
 
 https://db-ru.github.io/
 
-Локально:
+Сборать самому?
+===============
+
+Локально (будут видны):
 
 ```bash
+$ make dev
                    | RU  
 +------------------+----+
   Pages            | 30  
@@ -32,4 +36,11 @@ Serving pages from memory
 Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
 Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
 Press Ctrl+C to stop
+```
+
+Выложить обновление?
+====================
+
+```bash
+$ make deploy
 ```
