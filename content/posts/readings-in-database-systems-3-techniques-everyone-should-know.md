@@ -241,8 +241,86 @@ ARIES должен быть довольно простой статьей, но
 сложно добиться.
 
 
+## Распределённость
+
+Наша последняя статья в этой главе касается выполнения транзакций в
+распределенной среде. Эта тема особенно важна сегодня, поскольку все большее
+количество распределенных баз данных - либо реплицированных, с несколькими
+копиями данных на разных серверах, либо секционированных (партиционированных),
+с элементами данных, хранящимися на отдельных серверах (или на обоих). Несмотря
+на преимущества в отношении ёмкости, надёжности и доступности, распределённость
+создает новый набор проблем. Серверы могут выйти из строя, а сеть может быть
+ненадёжной. При отсутствии сбоев, сетевое взаимодействие может быть
+дорогостоящим.
+
+Мы концентрируемся на одном из основных методов обработки распределенных
+транзакций: атомарном обязательстве (atomic commitment, AC). Очень неформально,
+это означает, что для транзакции, которая выполняется на нескольких серверах
+(будь то несколько реплик, несколько разделов или оба), AC гарантирует, что
+транзакция либо зафиксируется, либо прервется на всех из них. Классический
+алгоритм достижения AC относится к середине 1970-х годов и называется двухфазной
+фиксацией (Two-Phase Commit, 2PC; не путать с 2PL выше!) [^67, ^100]. Помимо
+хорошего обзора 2PC и взаимодействия между протоколом фиксации и WAL, статья
+содержит два варианта AC, которые улучшают его производительность. Вариант
+«Предполагаемое прерывание» (Presumed Abort) позволяет процессам избегать
+принятия решения о прерывании на диск или подтверждения других прерываний, что
+уменьшает использование диска и сетевого трафика. Оптимизация «Предполагаемая
+фиксация» (Presumed Commit) аналогична: оптимизируется дисковое пространство и
+сетевой трафик при фиксации большего количества транзакций. Обратите внимание на
+сложность взаимодействия между протоколом 2PC, локальным хранилищем и локальным
+диспетчером транзакций; эти детали важны, и правильная реализация этих протоколов
+может быть сложной задачей.
+
+Возможность сбоев существенно усложняет AC (и большинство проблем в
+распределенных вычислениях). Например, в 2PC, что произойдет, если координатор и
+участник потерпят неудачу после того, как все участники отправили свои голоса,
+но до того, как координатор получит известие от отказавшего участника? Остальные
+участники не будут знать, зафиксировать или прервать транзакцию: проголосовал ли
+отказавший участник ДА или НЕТ? Участники не могут безопасно продолжить.
+Фактически, любая реализация AC может блокировать или не работать в ненадежной
+сети [^28]. В сочетании с сериализуемым механизмом управления параллелизмом
+блокировка AC означает, что пропускная способность может упасть до 0.
+В результате, мы имеем связанный набор AC-алгоритмов, которые исследовали AC при
+смягченных предположениях, касающихся как сети (например, предполагая синхронную
+сеть) [^145], так и информации, доступной серверам (например, с использованием
+«детектора отказов», который определяет, когда узлы выходят из строя) [^76].
+
+Наконец, многие читатели могут быть знакомы с тесно связанной проблемой
+консенсуса или, возможно, слышали о консенсусных реализациях, таких как алгоритм
+Paxos. При консенсусе может быть выбрано любое предложение, если все процессы в
+конечном итоге согласятся с ним. (Напротив, в AC любой отдельный участник может
+проголосовать «НЕТ», после чего все участники должны прервать работу.) Это
+делает консенсус «более легкой» проблемой, чем AC [^75], но, как и AC, любая
+реализация консенсуса может также блокировать определенные сценарии [^60].
+В современных распределенных базах данных консенсус часто используется в
+качестве основы для репликации, чтобы гарантировать, что реплики применяют
+обновления в том же порядке, как экземпляр репликации на конечных автоматах (см.
+туториал Шнайдера [141]). AC часто используется для выполнения транзакций,
+охватывающих несколько секций (партиций). Paxos от Лампорта [^99] - одна из самых
+ранних (и наиболее известных, отчасти из-за презентации, которая конкурирует с
+ARIES по сложности) реализаций консенсуса. Однако алгоритмы Viewstamped
+Replication [^102] и Raft [^125], ZAB [^92] и Multi-Paxos [^35] могут оказаться
+более полезными на практике. Это связано с тем, что эти алгоритмы реализуют
+абстракцию распределенного журнала (distributed log) (а не «консенсусный
+объект» (consensus object), как в исходной статье Paxos).
+
+К сожалению, сообщества баз данных и распределенных вычислений несколько
+разделены. Несмотря на общие интересы в реплицируемых данных, обмен идеями между
+ними в течение многих лет был ограничен. В эпоху облачного и масштабируемого
+управления данными этот разрыв сократился. Например, Грей и Лэмпорт в 2006 году
+совместно работали над Paxos Commit [^71], интересным алгоритмом, сочетающим AC и
+Paxos Лэмпорта. На этом пересечении еще многое предстоит сделать, и количество
+«техник, которые каждый должен знать» в этом пространстве выросло.
+
+
 [^27]: H. Berenson, P. Bernstein, J. Gray, J. Melton, E. O’Neil, and P. O’Neil.
 A critique of ANSI SQL isolation levels. In SIGMOD, 1995.
+
+[^28]: P. Bernstein, V. Hadzilacos, and N. Goodman. Concurrency control and
+recovery in database systems, volume 370. Addison-Wesley New York, 1987.
+
+[^35]: T. D. Chandra, R. Griesemer, and J. Redstone. Paxos made live: an
+engineering perspective. In PODC, 2007.
 
 [^48]: J. Dean. Designs, lessons and advice from building large distributed
 systems (keynote). In LADIS, 2009.
@@ -251,26 +329,63 @@ systems (keynote). In LADIS, 2009.
 consistency and predicate locks in a database system. Communications of the
 ACM, 19(11):624–633, 1976.
 
+[^60]: M. J. Fischer, N. A. Lynch, and M. S. Paterson. Impossibility of
+distributed consensus with one faulty process. Journal of the ACM (JACM),
+32(2):374–382, 1985.
+
 [^61]: M. J. Franklin. Concurrency control and recovery. The Computer Science
 and Engineering Handbook, pages 1–58–1077, 1997.
 
 [^66]: G. Graefe. The five-minute rule twenty years later, and how flash memory
 changes the rules. In DaMoN, 2007.
 
+[^67]: J. Gray. Notes on data base operating systems. In Operating Systems: An
+Advanced Course, volume 60 of Lecture Notes in Computer Science, pages 393–481.
+Springer Berlin Heidelberg, 1978.
+
 [^69]: J. Gray and G. Graefe. The five-minute rule ten years later, and other
 computer storage rules of thumb. ACM SIGMOD Record, 26(4):63–68, 1997.
+
+[^71]: J. Gray and L. Lamport. Consensus on transaction commit. ACM Transactions
+on Database Systems (TODS), 31(1):133–160, Mar. 2006.
 
 [^73]: J. Gray and F. Putzolu. The 5 minute rule for trading memory for disc
 accesses and the 10 byte rule for trading memory for cpu time. In SIGMOD, 1987.
 
+[^75]: R. Guerraoui. Revisiting the relationship between non-blocking atomic
+commitment and consensus. In WDAG, 1995.
+
+[^76]: R. Guerraoui, M. Larrea, and A. Schiper. Non blocking atomic commitment
+with an unreliable failure detector. In SRDS, 1995.
+
 [^78]: T. Haerder and A. Reuter. Principles of transaction-oriented database
 recovery. ACM Computing Surveys (CSUR), 15(4):287–317, 1983.
+
+[^92]: F. P. Junqueira, B. C. Reed, and M. Serafini. Zab: High-performance
+broadcast for primary-backup systems. In DSN, 2011.
+
+[^99]: L. Lamport. The part-time parliament. ACM Transactions on Computer
+Systems (TOCS), 16(2):133–169, 1998.
+
+[^100]: B. Lampson and H. Sturgis. Crash recovery in a distributed data storage
+system. Technical report, 1979.
+
+[^102]: B. Liskov and J. Cowling. Viewstamped replication revisited. Technical
+report, MIT, 2012.
 
 [^124]: P. E. O’Neil. The escrow transactional method. ACM Transactions on
 Database Systems, 11(4):405–430, 1986
 
+[^125]: D. Ongaro and J. Ousterhout. In search of an understandable consensus
+algorithm. In USENIX ATC, 2014.
+
 [^127]: R. Ramakrishnan and J. Gehrke. Database management systems. McGraw Hill,
 2000.
+
+[^141]: F. B. Schneider. Implementing fault-tolerant services using the state
+machine approach: A tutorial. ACM Computing Surveys (CSUR), 22(4):299–319, 1990.
+
+[^145]: D. Skeen. Nonblocking commit protocols. In SIGMOD, 1981.
 
 [^150]: M. Stonebraker, G. Held, E. Wong, and P. Kreps. The design and
 implementation of ingres. ACM Transactions on Database Systems (TODS), 1(3):
