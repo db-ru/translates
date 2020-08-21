@@ -12,8 +12,6 @@ categories:
 - gamma
 ---
 
-# 2. Традиционные реляционные СУДБ
-
 > Избранные статьи:
 >
 > - Morton M. Astrahan, Mike W. Blasgen, Donald D. Chamberlin, Kapali P.
@@ -27,8 +25,8 @@ categories:
 > - David J. DeWitt, Shahram Ghandeharizadeh, Donovan Schneider, Allan Bricker,
 >   Hui-I Hsiao, Rick Rasmussen. The Gamma Database Machine Project. IEEE
 >   Transactions on Knowledge and Data Engineering, 2(1), 1990, 44-62.
-
-Автор: Michael Stonebraker
+>
+> Автор: Michael Stonebraker
 
 {{< param Summary >}}
 

@@ -18,16 +18,14 @@ categories:
 - hdfs
 ---
 
-# 1. Основы
-
 > Избранные статьи:
 >
 > - Joseph M. Hellerstein and Michael Stonebraker. What Goes Around Comes
 >   Around. *Readings in Database Systems*, 4th Edition (2005).
 > - Joseph M. Hellerstein, Michael Stonebraker, James Hamilton. Architecture of
 >   a Database System. *Foundations and Trends in Databases*, 1, 2 (2007).
-
-Автор: Michael Stonebraker
+>
+> Автор: Michael Stonebraker
 
 {{< param Summary >}}
 
