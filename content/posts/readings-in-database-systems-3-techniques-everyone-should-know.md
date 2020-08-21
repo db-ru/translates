@@ -16,9 +16,9 @@ categories:
 - concurrency control
 - database recovery
 - distribution
+- two-phase locking
+- two-phase commit
 ---
-
-# 3. Методы, которые должен знать каждый
 
 > Избранные статьи:
 > 
@@ -38,8 +38,8 @@ categories:
 > - C. Mohan, Bruce G. Lindsay, Ron Obermarck. Transaction Management in the R\*
 >   Distributed Database Management System. ACM Transactions on Database Systems,
 >   11(4), 1986, 378-396
-
-Автор: Peter Bailis
+>
+> Автор: Peter Bailis
 
 {{< param Summary >}}
 
