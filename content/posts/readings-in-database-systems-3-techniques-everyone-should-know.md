@@ -16,7 +16,6 @@ categories:
 - concurrency control
 - database recovery
 - distribution
-draft: true
 ---
 
 # 3. Методы, которые должен знать каждый
