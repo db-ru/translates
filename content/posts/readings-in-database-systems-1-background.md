@@ -27,6 +27,8 @@ categories:
 > - Joseph M. Hellerstein, Michael Stonebraker, James Hamilton. Architecture of
 >   a Database System. *Foundations and Trends in Databases*, 1, 2 (2007).
 
+Автор: Michael Stonebraker
+
 {{< param Summary >}}
 
 Десять лет назад у всех на слуху был XML. Вендоры намеревались добавить XML в

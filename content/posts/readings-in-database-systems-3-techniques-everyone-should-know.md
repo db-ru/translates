@@ -39,6 +39,8 @@ categories:
 >   Distributed Database Management System. ACM Transactions on Database Systems,
 >   11(4), 1986, 378-396
 
+Автор: Peter Bailis
+
 {{< param Summary >}}
 
 ## Оптимизация запросов {#query-optimization}

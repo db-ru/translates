@@ -28,6 +28,8 @@ categories:
 >   Hui-I Hsiao, Rick Rasmussen. The Gamma Database Machine Project. IEEE
 >   Transactions on Knowledge and Data Engineering, 2(1), 1990, 44-62.
 
+Автор: Michael Stonebraker
+
 {{< param Summary >}}
 
 Проект System R начался под руководством Фрэнка Кинга в IBM Research, вероятно,
