@@ -1,5 +1,5 @@
 ---
-title: "Readings in Database Systems. Основы"
+title: "Readings in Database Systems. 1. Основы"
 date: 2020-07-12T12:41:13+03:00
 summary: "
 Я поражен тем, что эти две статьи были написаны всего десять лет назад! Моё

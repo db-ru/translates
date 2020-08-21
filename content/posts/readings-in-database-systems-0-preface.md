@@ -1,5 +1,5 @@
 ---
-title: "Readings in Database Systems. Предисловие"
+title: "Readings in Database Systems. 0. Предисловие"
 summary: "Readings in Database Systems (широко известная как 'Red book')
 предлагает читателям своевольный взгляд как на классические, так и на
 передовые исследования в области управления данными с 1988 года. Здесь
