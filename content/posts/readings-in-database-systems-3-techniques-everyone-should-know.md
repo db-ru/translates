@@ -18,6 +18,7 @@ categories:
 - distribution
 - two-phase locking
 - two-phase commit
+- Peter Bailis
 ---
 
 > Избранные статьи:

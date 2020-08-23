@@ -9,6 +9,9 @@ draft: false
 categories:
 - readings in database systems
 - red book
+- Peter Bailis
+- Joseph M. Hellerstein
+- Michael Stonebraker
 ---
 
 За десять лет, прошедших со времени предыдущего издания «Readings in Database

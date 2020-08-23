@@ -10,6 +10,7 @@ categories:
 - system r
 - postgres
 - gamma
+- Michael Stonebraker
 ---
 
 > Избранные статьи:

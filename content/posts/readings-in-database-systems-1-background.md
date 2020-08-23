@@ -16,6 +16,7 @@ categories:
 - json
 - xml
 - hdfs
+- Michael Stonebraker
 ---
 
 > Избранные статьи:

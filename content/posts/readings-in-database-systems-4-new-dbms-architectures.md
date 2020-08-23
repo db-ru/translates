@@ -13,9 +13,8 @@ categories:
 - column store
 - row store
 - two-phase locking
+- Michael Stonebraker
 ---
-
-# 4. Новые архитектуры СУБД
 
 > Избранные статьи:
 > 
