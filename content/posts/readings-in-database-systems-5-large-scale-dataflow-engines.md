@@ -14,7 +14,6 @@ categories:
 - google file system
 - dataflow engine
 - Peter Bailis
-draft: true
 ---
 
 > Избранные статьи:
